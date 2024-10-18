@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "107929725394",
+    "project_id": "shreddrdatabase",
+    "storage_bucket": "shreddrdatabase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:107929725394:android:f34ae7c061a28765b0000b",
+        "android_client_info": {
+          "package_name": "com.example.shreddr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "107929725394-bh67b1lgbp0jr6bl63rctn2drjga0kms.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shreddr",
+            "certificate_hash": "c9b2108aa85e9262cf44be2b66244d6fd4ea48f4"
+          }
+        },
+        {
+          "client_id": "107929725394-f9b8urr69tihfnsava4tss0ocder295m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4ghEaOgBSwwUKFKbwgWgrrud0oVmyb0c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "107929725394-f9b8urr69tihfnsava4tss0ocder295m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
