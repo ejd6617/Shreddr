@@ -39,7 +39,7 @@ fun RegistrationScreen(navController: NavController) {
             value = username,
             onValueChange = { username = it },
             label = { Text("Username") },
-            modifier = Modifier.width(300.dp)
+            modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp)) // Add some space between fields
         OutlinedTextField(
@@ -47,7 +47,7 @@ fun RegistrationScreen(navController: NavController) {
             onValueChange = { password = it },
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation(), // Hide password
-            modifier = Modifier.width(300.dp)
+            modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp)) // Add some space between fields
         registerButton(navController, username, password)
@@ -88,7 +88,7 @@ fun goBackButton(navController: NavController)
         },
         modifier = Modifier
             .padding(16.dp)
-            .width(300.dp),
+            .fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
         shape = RoundedCornerShape(8.dp)
     ) { Text("Go Back", color = Color.White)}

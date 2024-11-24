@@ -33,7 +33,7 @@ class RegistrationController(
                     usersRef.child(uid).setValue(newUser) //long ah function creates a new user class and stores it in the database
                         .addOnSuccessListener {
                             Log.d(TAG, "createUserWithUsername:success")
-                            navController.navigate("testScreen")
+                            navController.navigate("searchScreen")
                         }
                         .addOnFailureListener { exception ->
                             Log.w(TAG, "createUserWithUsername:failure", exception)
