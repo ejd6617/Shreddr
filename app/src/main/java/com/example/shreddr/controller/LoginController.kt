@@ -12,9 +12,6 @@ class LoginController(private val navController: NavController) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // Login successful, get the current user
-                    val user = auth.currentUser
-                    // Optionally, you can access user details like user?.email, user?.uid, etc.
                     onResult(0) // Return success code
                     navController.navigate("searchScreen")
                 } else {
