@@ -152,7 +152,7 @@ class SearchScreen(
                     IconButton(onClick = { /* Handle action */ }) {
                         Icon(Icons.Filled.Settings, contentDescription = "Settings")
                     }
-                    FloatingActionButton(onClick = { /* Handle action */ }) {
+                    FloatingActionButton(onClick = { navController.navigate("addChordChartScreen") }) {
                         Icon(Icons.Filled.Add, contentDescription = "Add")
                     }
                 }

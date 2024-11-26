@@ -30,16 +30,17 @@ class NavStart : ComponentActivity() {
                 val loginScreen = LoginScreen(navController, userController, null)
                 val registrationScreen = RegistrationScreen(navController, userController, null)
                 val searchScreen = SearchScreen(navController, userController, null)
+                val addChordChartScreen = AddChordChartScreen(navController)
 
 
 
 
                 NavHost(navController = navController, startDestination = "signInWindow") { //assigns the start screen to the "signInWindow" tag
-                    composable("signInWindow") { loginScreen.loginScreen() } // defines the "signInWindow" tag as the loginScreen function of the LoginScreen.kt class (note: you do assign functions, not classes. None of our view "classes" actually have a class body, only functions.
+                    composable("signInWindow") { loginScreen.loginScreen() } // defines the "signInWindow" tag as the LoginScreen function of the LoginScreen.kt class.
                     composable("registrationWindow") { registrationScreen.registrationScreen() } // defines the "registrationWindow" tag as the RegistrationScreen function of the RegistrationScreen.kt class
                     composable("searchScreen") { searchScreen.searchScreen() } // defines the "searchScreen" tag as the searchScreen function of the com.example.shreddr.view.SearchScreen.kt class
                     composable("testScreen") { testScreen(navController) } // defines the "testScreen" tag as the testScreen function of the testScreen.kt class (this is to test if navigation is working correctly)
-
+                    composable("addChordChartScreen") { addChordChartScreen.addChordChartScreen() } // defines the "addChordChartScreen" tag as the addChordChartScreen function of the AddChordChartScreen")
                 }
             }
         }
