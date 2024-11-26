@@ -1,3 +1,6 @@
+package com.example.shreddr.view
+
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,7 +25,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,14 +36,86 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.shreddr.controller.DeleteAccountController
 import com.google.firebase.auth.FirebaseAuth
-import androidx.compose.runtime.rememberCoroutineScope
+import com.example.shreddr.controller.UserController
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+class SearchScreen(
+    private val navController: NavController,
+    private val userController: UserController,
+    private var context: Context?)
+{
     @Composable
-    fun searchScreenfunction(navController : NavController)
+    fun DeleteUserButton()
+    {
+        context = LocalContext.current
+        var showDialog by remember { mutableStateOf(false) }
+        Button(
+            onClick = {
+                showDialog = true
+
+            },
+            modifier = Modifier.padding(16.dp).fillMaxWidth().shadow(8.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+            shape = RoundedCornerShape(8.dp)
+        ) {Text("Delete Account", color = Color.White)}
+
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                title = { Text("Confirmation") },
+                text = { Text("Are you sure you would like to delete your account?") },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            userController.deleteUser {
+                                    errorCode  ->
+
+                                when (errorCode) {
+                                    0 -> navController.navigate("signInWindow")
+                                    -1 -> Toast.makeText(
+                                        context,
+                                        "No user logged in",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    -2 -> Toast.makeText(
+                                        context,
+                                        "Error in deleting from database",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    -3 -> Toast.makeText(
+                                        context,
+                                        "Error in deleting from auth",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    1 -> Toast.makeText(
+                                        context,
+                                        "Something else happened",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                            showDialog = false
+                        }) {
+                        Text("Yes")
+                    }
+                },
+                dismissButton = {
+                    Button(onClick = { showDialog = false }) {
+                        Text("No")
+                    }
+                }
+            )
+        }
+
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun searchScreen()
     {
         // Remember the state to control visibility of the tab
         var isTabVisible by remember { mutableStateOf(false) }
@@ -65,7 +139,7 @@ import androidx.compose.runtime.rememberCoroutineScope
                 ) {
                     // Show the tab only when `isTabVisible` is true
                     if (isTabVisible) {
-                        TabContent(navController)
+                        TabContent()
                     }
                     Spacer(modifier = Modifier.weight(1f)) // Filler space
                 }
@@ -86,108 +160,44 @@ import androidx.compose.runtime.rememberCoroutineScope
         )
     }
 
-@Composable
-fun TabContent(navController: NavController) {
-    val userData = FirebaseAuth.getInstance().currentUser
+    @Composable
+    fun TabContent() {
+        val userData = FirebaseAuth.getInstance().currentUser
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        Text(text ="Account Management", fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
-        Text("${userData?.email}")
-        Spacer(modifier = Modifier.height(16.dp))
-        LogoutButton(navController)
-        DeleteUserButton(navController)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text(text ="Account Management", fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
+            Text("${userData?.email}")
+            Spacer(modifier = Modifier.height(16.dp))
+            LogoutButton()
+            DeleteUserButton()
+        }
     }
-}
 
-
-@Composable
-fun LogoutButton(navController: NavController)
-{
-    Button(
-        onClick = {
-            navController.navigate("signInWindow")// navigates back to the login screen
-        },
-        modifier = Modifier.padding(16.dp).fillMaxWidth().shadow(8.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
-        shape = RoundedCornerShape(8.dp)
-    ) {Text("Log Out", color = Color.White)}
-
-}
-
-
-
-@Composable
-fun DeleteUserButton(navController: NavController)
-{
-    val context = LocalContext.current
-    val deleteController = remember { DeleteAccountController() }
-    var showDialog by remember { mutableStateOf(false) }
-    Button(
-        onClick = {
-            showDialog = true
-
-        },
-        modifier = Modifier.padding(16.dp).fillMaxWidth().shadow(8.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
-        shape = RoundedCornerShape(8.dp)
-    ) {Text("Delete Account", color = Color.White)}
-
-    if (showDialog) {
-        AlertDialog(
-            onDismissRequest = { showDialog = false },
-            title = { Text("Confirmation") },
-            text = { Text("Are you sure you would like to delete your account?") },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        deleteController.deleteUser {
-                            errorCode  ->
-
-                            when (errorCode) {
-                                0 -> navController.navigate("signInWindow")
-                                -1 -> Toast.makeText(
-                                    context,
-                                    "No user logged in",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-                                -2 -> Toast.makeText(
-                                    context,
-                                    "Error in deleting from database",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-                                -3 -> Toast.makeText(
-                                    context,
-                                    "Error in deleting from auth",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-                                1 -> Toast.makeText(
-                                    context,
-                                    "Something else happened",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-                        showDialog = false
-                    }) {
-                    Text("Yes")
-                }
+    @Composable
+    fun LogoutButton()
+    {
+        Button(
+            onClick = {
+                navController.navigate("signInWindow")// navigates back to the login screen
             },
-            dismissButton = {
-                Button(onClick = { showDialog = false }) {
-                    Text("No")
-                }
-            }
-        )
+            modifier = Modifier.padding(16.dp).fillMaxWidth().shadow(8.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+            shape = RoundedCornerShape(8.dp)
+        ) {Text("Log Out", color = Color.White)}
+
     }
 
 }
+
+
+
+
+
+
 
 
 
