@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.shreddr.controller.ChordChartController
 import com.example.shreddr.controller.UserController
 
 
@@ -24,13 +25,14 @@ class NavStart : ComponentActivity() {
 
                 //initalizing controllers
                 val userController = UserController()
+                val chordChartController = ChordChartController()
 
 
                 //initalizing screens
                 val loginScreen = LoginScreen(navController, userController, null)
                 val registrationScreen = RegistrationScreen(navController, userController, null)
                 val searchScreen = SearchScreen(navController, userController, null)
-                val addChordChartScreen = AddChordChartScreen(navController)
+                val addChordChartScreen = AddChordChartScreen(navController, chordChartController)
 
 
 
