@@ -35,7 +35,7 @@ import androidx.navigation.NavController
 import com.example.shreddr.controller.ChordChartController
 import com.example.shreddr.model.ChordChart
 
-class ManageChordChartsScreen(private val navController: NavController, private val chordChartController: ChordChartController) {
+class ManageChordChartsScreen(private val navController: NavController, private val chordChartController: ChordChartController, private val editChordChartScreen: EditChordChartScreen) {
 
     private var chordCharts = mutableStateListOf<ChordChart>()
 
@@ -95,8 +95,12 @@ class ManageChordChartsScreen(private val navController: NavController, private 
             {
                 IconButton(onClick = { showDialog = true })
                 {Icon(Icons.Filled.Delete, contentDescription = "Delete")}
-                IconButton(onClick = { })
-                {Icon(Icons.Filled.Create, contentDescription = "Delete")}
+                IconButton(onClick = {
+                    editChordChartScreen.setValue(chart)//edits the fields for the edit chord chart screen
+                    navController.navigate("editChordChartScreen")
+
+                })
+                {Icon(Icons.Filled.Create, contentDescription = "Edit chart")}
 
             }
 

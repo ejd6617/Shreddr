@@ -74,7 +74,7 @@ class ChordChartController () {
         )
     }
 
-    fun deleteChordChart(chartId: String, onResult: (Int) -> Unit)
+    fun deleteChordChart(chartId: String, onDeleteResult: (Int) -> Unit)
     {
         val chartRef = FirebaseDatabase.getInstance().reference.child("chord_charts")
         val chartToDeleteRef = chartRef.child(chartId)
@@ -83,13 +83,13 @@ class ChordChartController () {
 
             if (task.isSuccessful)
             {
-                onResult(0)
+                onDeleteResult(0)
                 //chart removal successful
                 return@addOnCompleteListener
             }
             else
             {
-                onResult(-1)
+                onDeleteResult(-1)
                 return@addOnCompleteListener
 
             }

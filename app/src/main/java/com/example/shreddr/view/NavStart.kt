@@ -33,7 +33,8 @@ class NavStart : ComponentActivity() {
                 val registrationScreen = RegistrationScreen(navController, userController, null)
                 val searchScreen = SearchScreen(navController, userController, null)
                 val addChordChartScreen = AddChordChartScreen(navController, chordChartController)
-                val ManageChordChartsScreen = ManageChordChartsScreen(navController, chordChartController)
+                val editChordChartScreen = EditChordChartScreen(navController, chordChartController)
+                val manageChordChartsScreen = ManageChordChartsScreen(navController, chordChartController, editChordChartScreen)
 
 
 
@@ -44,7 +45,8 @@ class NavStart : ComponentActivity() {
                     composable("searchScreen") { searchScreen.searchScreen() } // defines the "searchScreen" tag as the searchScreen function of the com.example.shreddr.view.SearchScreen.kt class
                     composable("testScreen") { testScreen(navController) } // defines the "testScreen" tag as the testScreen function of the testScreen.kt class (this is to test if navigation is working correctly)
                     composable("addChordChartScreen") { addChordChartScreen.addChordChartScreen() } // defines the "addChordChartScreen" tag as the addChordChartScreen function of the AddChordChartScreen")
-                    composable("manageChordChartScreen") { ManageChordChartsScreen.manageChordChartsScreen() } // defines the "manageChordChartScreen" tag as the manageChordChartsScreen function of the ManageChordChartsScreen")
+                    composable("manageChordChartScreen") { manageChordChartsScreen.manageChordChartsScreen() } // defines the "manageChordChartScreen" tag as the manageChordChartsScreen function of the ManageChordChartsScreen")
+                    composable("editChordChartScreen") { editChordChartScreen.editChordChartScreen() } // defines the "editChordChartScreen" tag as the editChordChartScreen function of the EditChordChartScreen")
                 }
             }
         }
