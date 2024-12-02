@@ -46,7 +46,7 @@ class SearchScreen(
     private var context: Context?)
 {
     @Composable
-    fun DeleteUserButton()
+    fun DeleteUserButton() // implementation of the delete user button
     {
         context = LocalContext.current
         var showDialog by remember { mutableStateOf(false) }
@@ -68,9 +68,12 @@ class SearchScreen(
                 confirmButton = {
                     Button(
                         onClick = {
+                            //this syntax is everywhere - what's going on is that Firebase API calls are asyncronous operations, so we need to wait for them to finish before continuing.
+                            //the deleteUser function with it's last argument essentailly makes the API call an syncronous operation, so that the progrom waits for it's completeion before continuing.
+                            //if this wasnt present, the function would return multiple times with different values, so this makes the app run smoother
                             userController.deleteUser {
                                     errorCode  ->
-
+                                //this is switch statement syntax
                                 when (errorCode) {
                                     0 -> navController.navigate("signInWindow")
                                     -1 -> Toast.makeText(
@@ -152,7 +155,8 @@ class SearchScreen(
                     IconButton(onClick = {navController.navigate("manageChordChartScreen") }) {
                         Icon(Icons.Filled.Settings, contentDescription = "Settings")
                     }
-                    FloatingActionButton(onClick = { navController.navigate("addChordChartScreen") }) {
+                    FloatingActionButton(onClick = {
+                        navController.navigate("addChordChartScreen") }) {
                         Icon(Icons.Filled.Add, contentDescription = "Add")
                     }
                 }

@@ -1,12 +1,17 @@
 package com.example.shreddr.view
 
 import android.widget.Toast
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Create
@@ -28,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -40,13 +46,15 @@ class ManageChordChartsScreen(private val navController: NavController, private 
     private var chordCharts = mutableStateListOf<ChordChart>()
 
 
+
+
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun manageChordChartsScreen() {
         chordChartController.getUserChordCharts() { chordCharts ->
            this.chordCharts = chordCharts.toMutableStateList()
         }
-
+        val scrollState = rememberScrollState()
 
         Scaffold(
             topBar = {
@@ -56,7 +64,7 @@ class ManageChordChartsScreen(private val navController: NavController, private 
                 )
             },
             content = { innerPadding ->
-                LazyColumn(modifier = Modifier.padding(innerPadding))
+                LazyColumn(modifier = Modifier.padding(innerPadding).background(Color(0xffc16cf7))) // Lazy columns allow for scrolling
                 {
                     //for each chordChart
                     items(chordCharts.size) { index ->
@@ -87,10 +95,10 @@ class ManageChordChartsScreen(private val navController: NavController, private 
 
         var showDialog by remember { mutableStateOf(false) }
 
-        Column(modifier = Modifier.padding(16.dp))
+        Column(modifier = Modifier.padding(16.dp).border(2.dp, Color.Black, shape = androidx.compose.foundation.shape.RoundedCornerShape(10.dp)).background(Color(0xff55028b)))
         {
-            Text("Chart Author: ${chart.author}")
-            Text("Song Name: ${chart.name}", fontWeight = FontWeight.Bold)
+            Text("  Chart Author: ${chart.author}", color = Color.LightGray)
+            Text("  Song Name: ${chart.name}", fontWeight = FontWeight.Bold, color = Color.LightGray)
             Row(modifier = Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.Start)
             {
                 IconButton(onClick = { showDialog = true })

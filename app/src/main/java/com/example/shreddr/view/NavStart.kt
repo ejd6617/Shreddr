@@ -31,10 +31,10 @@ class NavStart : ComponentActivity() {
                 //initalizing screens
                 val loginScreen = LoginScreen(navController, userController, null)
                 val registrationScreen = RegistrationScreen(navController, userController, null)
-                val searchScreen = SearchScreen(navController, userController, null)
                 val addChordChartScreen = AddChordChartScreen(navController, chordChartController)
                 val editChordChartScreen = EditChordChartScreen(navController, chordChartController)
                 val manageChordChartsScreen = ManageChordChartsScreen(navController, chordChartController, editChordChartScreen)
+                val searchScreen = SearchScreen(navController, userController, null)
 
 
 
