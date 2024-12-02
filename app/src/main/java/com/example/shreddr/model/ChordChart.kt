@@ -7,7 +7,14 @@ data class ChordChart(
     val name: String,
     val artist: String,
     val key: String,
-    val chordsAndLyrics: List<Pair<String, String>> = listOf()
+    val chordsAndLyrics: List<ChordLyricPairs> = listOf(),
+    val userId: String? = null,
+    var chartID: String
 )
+{
+    constructor() : this(null, "", "", "", listOf(), null, "")
+
+
+}
 
 

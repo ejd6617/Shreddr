@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.shreddr.controller.ChordChartController
 import com.example.shreddr.model.ChordChart
+import com.example.shreddr.model.ChordLyricPairs
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -58,7 +59,7 @@ class AddChordChartScreen(private val navController: NavController, private val 
     private var songName = mutableStateOf("")
     private var artistName = mutableStateOf("")
     private val songKeys = listOf("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B")
-    private var chordsAndLyrics = mutableStateListOf(Pair("",""))
+    private var chordsAndLyrics = mutableStateListOf(ChordLyricPairs())
     private var selectedKey = mutableStateOf("C")
 
 
@@ -189,8 +190,8 @@ class AddChordChartScreen(private val navController: NavController, private val 
                 //display a text field for each member in the pair
                 //first is chord, second is lyrics
                 TextField(
-                    value = pair.first, onValueChange = { newChord ->
-                        chordsAndLyrics[index] = pair.copy(first = newChord)
+                    value = chordsAndLyrics[index].first, onValueChange = { newChord ->
+                        chordsAndLyrics[index].changeChords(newChord)
                     },
 
                     label = { Text("Chord ${index + 1}") },
@@ -198,8 +199,8 @@ class AddChordChartScreen(private val navController: NavController, private val 
                 )
 
                 TextField(
-                    value = pair.second, onValueChange = { newLyrics ->
-                        chordsAndLyrics[index] = pair.copy(second = newLyrics)
+                    value = chordsAndLyrics[index].second, onValueChange = { newLyrics ->
+                        chordsAndLyrics[index].changeLyrics(newLyrics)
                     },
                     label = { Text("Lyrics ${index + 1}") },
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
@@ -218,7 +219,7 @@ class AddChordChartScreen(private val navController: NavController, private val 
 
     fun addPair()
     {
-        chordsAndLyrics.add(Pair("", ""))
+        chordsAndLyrics.add(ChordLyricPairs())
     }
 
     @Composable
@@ -274,7 +275,7 @@ class AddChordChartScreen(private val navController: NavController, private val 
                 confirmButton = {
                     Button(
                         onClick = {
-                             val chordChart = ChordChart(currentUser?.email, songName.value, artistName.value, selectedKey.value, chordsAndLyrics)
+                             val chordChart = ChordChart(currentUser?.email, songName.value, artistName.value, selectedKey.value, chordsAndLyrics, currentUser?.uid, "")
                             chordChartController.saveChordChart(chordChart) { errorCode ->
                                 when(errorCode) {
                                     0 -> {Toast.makeText( context,  "Chord Chart Successfully Uploaded!",  Toast.LENGTH_SHORT).show()

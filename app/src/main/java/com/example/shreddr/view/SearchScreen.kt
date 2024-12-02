@@ -149,7 +149,7 @@ class SearchScreen(
                     modifier = Modifier.fillMaxWidth().padding(16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    IconButton(onClick = { /* Handle action */ }) {
+                    IconButton(onClick = {navController.navigate("manageChordChartScreen") }) {
                         Icon(Icons.Filled.Settings, contentDescription = "Settings")
                     }
                     FloatingActionButton(onClick = { navController.navigate("addChordChartScreen") }) {
