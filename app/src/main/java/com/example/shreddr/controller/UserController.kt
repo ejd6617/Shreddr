@@ -25,7 +25,7 @@ class UserController(private val chordChartController: ChordChartController)
             chordChartController.getUserChordCharts { chordCharts ->
 
                 for (chart in chordCharts) {
-                    chordChartController.deleteChordChart(chart.getID()) {
+                    chordChartController.deleteChordChart(chart.chartID) {
                         if (it == 0) {
                             println("Chord chart deleted successfully")
                         } else {

@@ -7,8 +7,8 @@ import androidx.compose.runtime.setValue
 class ChordLyricPairs(chords: String = "",lyrics: String = "")
 {
 
-    private var chords by mutableStateOf(chords)
-    private var lyrics by mutableStateOf(lyrics)
+    var chords by mutableStateOf(chords)
+    var lyrics by mutableStateOf(lyrics)
 
     fun changeChords(chords: String)
     {
@@ -22,15 +22,5 @@ class ChordLyricPairs(chords: String = "",lyrics: String = "")
 
     }
 
-    fun getChords(): String
-    {
-        return chords
-
-    }
-
-    fun getLyrics(): String
-    {
-        return lyrics
-    }
 
 }

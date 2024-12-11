@@ -58,11 +58,11 @@ class EditChordChartScreen(private val navController:  NavController, private va
 
     fun setValue(chart: ChordChart)
     {
-        name = mutableStateOf(chart.getName())
-        artist = mutableStateOf(chart.getArtist())
-        key = mutableStateOf(chart.getKey())
-        chordsAndLyrics =  mutableStateListOf(*chart.getChordsAndLyrics().toTypedArray()) // i have no idea why this works but it does???
-        chartID = chart.getID()
+        name = mutableStateOf(chart.name)
+        artist = mutableStateOf(chart.artist)
+        key = mutableStateOf(chart.key)
+        chordsAndLyrics =  mutableStateListOf(*chart.chordsAndLyrics.toTypedArray()) // i have no idea why this works but it does???
+        chartID = chart.chartID
 
     }
 
@@ -168,7 +168,7 @@ class EditChordChartScreen(private val navController:  NavController, private va
                 //display a text field for each member in the pair
                 //first is chord, second is lyrics
                 TextField(
-                    value = chordsAndLyrics[index].getChords(), onValueChange = { newChord ->
+                    value = chordsAndLyrics[index].chords, onValueChange = { newChord ->
                         chordsAndLyrics[index].changeChords(newChord)
                     },
 
@@ -177,7 +177,7 @@ class EditChordChartScreen(private val navController:  NavController, private va
                 )
 
                 TextField(
-                    value = chordsAndLyrics[index].getLyrics(), onValueChange = { newLyrics ->
+                    value = chordsAndLyrics[index].lyrics, onValueChange = { newLyrics ->
                         chordsAndLyrics[index].changeLyrics(newLyrics)
                     },
                     label = { Text("Lyrics ${index + 1}") },
