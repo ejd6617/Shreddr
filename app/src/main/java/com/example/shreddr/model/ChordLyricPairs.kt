@@ -23,5 +23,4 @@ class ChordLyricPairs(chords: String = "",lyrics: String = "")
     }
 
 
-
 }
