@@ -138,7 +138,7 @@ class EditChordChartScreen(private val navController:  NavController, private va
        if (backTabVisible) {
            AlertDialog(
                onDismissRequest = { backTabVisible = false },
-               title = { Text("Confirmation") },
+               title = { Text("Confirmation to Discard") },
                text = { Text("Go back to the search screen and discard all changes?") },
                confirmButton = {
                    Button(
