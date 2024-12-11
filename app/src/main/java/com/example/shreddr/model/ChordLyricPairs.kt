@@ -4,21 +4,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
-class ChordLyricPairs(first: String = "",second: String = "")
+class ChordLyricPairs(chords: String = "",lyrics: String = "")
 {
 
-    var first by mutableStateOf(first)
-    var second by mutableStateOf(second)
+    var chords by mutableStateOf(chords)
+    var lyrics by mutableStateOf(lyrics)
 
     fun changeChords(chords: String)
     {
-        first = chords
+        this.chords = chords
 
     }
 
     fun changeLyrics(lyrics: String)
     {
-        second = lyrics
+        this.lyrics = lyrics
 
     }
 
