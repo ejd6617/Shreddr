@@ -42,10 +42,11 @@ import androidx.navigation.NavController
 import com.example.shreddr.controller.ChordChartController
 import com.example.shreddr.model.ChordChart
 
-class ManageChordChartsScreen(private val navController: NavController, private val chordChartController: ChordChartController, private val editChordChartScreen: EditChordChartScreen) {
+class ManageChordChartsScreen(private val navController: NavController, private val chordChartController: ChordChartController, private val editChordChartScreen: EditChordChartScreen)
+{
 
     private var chordCharts = mutableStateListOf<ChordChart>()
-
+    private var listUpdate = mutableStateOf(false)
 
 
 
@@ -54,6 +55,7 @@ class ManageChordChartsScreen(private val navController: NavController, private 
     fun manageChordChartsScreen() {
         chordChartController.getUserChordCharts() { chordCharts ->
            this.chordCharts = chordCharts.toMutableStateList()
+
         }
         val scrollState = rememberScrollState()
 
@@ -75,6 +77,12 @@ class ManageChordChartsScreen(private val navController: NavController, private 
                     //for each chordChart
                     items(chordCharts.size) { index ->
                         chordChartItem(chordCharts[index])
+                    }
+
+                    if(listUpdate.value)
+                    {
+                        //detects if the list has been altered, and if so, triggers recomposition by changing value
+                        listUpdate.value = false
                     }
                 }
             },
@@ -100,6 +108,7 @@ class ManageChordChartsScreen(private val navController: NavController, private 
     @Composable
     fun chordChartItem(chart: ChordChart) {
         val context = LocalContext.current
+        val updateScreen = remember{ mutableStateOf(false)}
 
         var showDialog by remember { mutableStateOf(false) }
 
@@ -116,7 +125,7 @@ class ManageChordChartsScreen(private val navController: NavController, private 
                     navController.navigate("editChordChartScreen")
 
                 })
-                {Icon(Icons.Filled.Create, contentDescription = "Edit chart", tint = Color(0xFFFDDCA9))}
+                {Icon(Icons.Filled.Create, contentDescription = "Edit Chart", tint = Color(0xFFFDDCA9))}
 
             }
 
@@ -135,8 +144,10 @@ class ManageChordChartsScreen(private val navController: NavController, private 
                                when(onResult)
                                {
                                    0 -> {
-                                       chordCharts.remove(chart)
+                                       chordCharts = chordCharts.filter { it != chart }.toMutableStateList()//instead of removing from list, filter instead to trigger recomposition
+                                       listUpdate.value = true//triggers recomposition
                                        Toast.makeText(context, "Chart deleted successfully", Toast.LENGTH_SHORT).show()
+
                                    }
                                    -1 -> {
                                        Toast.makeText(context, "Failed to delete chart", Toast.LENGTH_SHORT).show()
