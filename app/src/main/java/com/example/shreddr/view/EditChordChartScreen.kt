@@ -168,7 +168,7 @@ class EditChordChartScreen(private val navController:  NavController, private va
                 //display a text field for each member in the pair
                 //first is chord, second is lyrics
                 TextField(
-                    value = chordsAndLyrics[index].first, onValueChange = { newChord ->
+                    value = chordsAndLyrics[index].getChords(), onValueChange = { newChord ->
                         chordsAndLyrics[index].changeChords(newChord)
                     },
 
@@ -177,7 +177,7 @@ class EditChordChartScreen(private val navController:  NavController, private va
                 )
 
                 TextField(
-                    value = chordsAndLyrics[index].second, onValueChange = { newLyrics ->
+                    value = chordsAndLyrics[index].getLyrics(), onValueChange = { newLyrics ->
                         chordsAndLyrics[index].changeLyrics(newLyrics)
                     },
                     label = { Text("Lyrics ${index + 1}") },
