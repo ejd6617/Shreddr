@@ -27,7 +27,7 @@ class ChordChartController () {
         val chart = ChordChart(currentUserName, songName, artistName, selectedKey, chordsAndLyrics, userID, "")
         // Proceed with the Firebase operation only if the inputs are valid
         val songId = chordChartRef.push().key
-        chart.chartID = songId ?: ""//sets the ID of the chart as a attribute of the chart
+        chart.setID(songId ?: "")
         songId?.let {
             chordChartRef.child(it).setValue(chart)
                 .addOnCompleteListener { task ->

@@ -82,7 +82,7 @@ class SearchScreen(
                             //this syntax is everywhere - what's going on is that Firebase API calls are asyncronous operations, so we need to wait for them to finish before continuing.
                             //the deleteUser function with it's last argument essentailly makes the API call an syncronous operation, so that the progrom waits for it's completeion before continuing.
                             //if this wasnt present, the function would return multiple times with different values, so this makes the app run smoother
-                            userController.deleteUser {
+                            userController.deleteUser() {
                                     errorCode  ->
                                 //this is switch statement syntax
                                 when (errorCode) {

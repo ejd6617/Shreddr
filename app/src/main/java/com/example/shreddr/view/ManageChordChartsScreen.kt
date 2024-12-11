@@ -105,8 +105,8 @@ class ManageChordChartsScreen(private val navController: NavController, private 
 
         Column(modifier = Modifier.padding(16.dp).border(2.dp, Color.Black, shape = androidx.compose.foundation.shape.RoundedCornerShape(10.dp)).background(Color(0xFFE76219)))
         {
-            Text("  Chart Author: ${chart.author}", color = Color(0xFFFDDCA9))
-            Text("  Song Name: ${chart.name}", fontWeight = FontWeight.Bold, color = Color(0xFFFDDCA9))
+            Text("  Chart Author: ${chart.getAuthor()}", color = Color(0xFFFDDCA9))
+            Text("  Song Name: ${chart.getName()}", fontWeight = FontWeight.Bold, color = Color(0xFFFDDCA9))
             Row(modifier = Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.Start)
             {
                 IconButton(onClick = { showDialog = true })
@@ -127,11 +127,11 @@ class ManageChordChartsScreen(private val navController: NavController, private 
             AlertDialog(
                 onDismissRequest = { showDialog = false },
                 title = { Text("Confirmation") },
-                text = { Text("Are you sure you want to delete this chart?\nChart: ${chart.name}\nThis action cannot be undone.") },
+                text = { Text("Are you sure you want to delete this chart?\nChart: ${chart.getName()}\nThis action cannot be undone.") },
                 confirmButton = {
                     Button(
                         onClick = {
-                           chordChartController.deleteChordChart(chart.chartID) {onResult ->
+                           chordChartController.deleteChordChart(chart.getID()) {onResult ->
                                when(onResult)
                                {
                                    0 -> {

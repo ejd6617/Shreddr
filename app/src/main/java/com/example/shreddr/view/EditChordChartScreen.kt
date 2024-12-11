@@ -58,11 +58,11 @@ class EditChordChartScreen(private val navController:  NavController, private va
 
     fun setValue(chart: ChordChart)
     {
-        name = mutableStateOf(chart.name)
-        artist = mutableStateOf(chart.artist)
-        key = mutableStateOf(chart.key)
-        chordsAndLyrics =  mutableStateListOf(*chart.chordsAndLyrics.toTypedArray()) // i have no idea why this works but it does???
-        chartID = chart.chartID
+        name = mutableStateOf(chart.getName())
+        artist = mutableStateOf(chart.getArtist())
+        key = mutableStateOf(chart.getKey())
+        chordsAndLyrics =  mutableStateListOf(*chart.getChordsAndLyrics().toTypedArray()) // i have no idea why this works but it does???
+        chartID = chart.getID()
 
     }
 

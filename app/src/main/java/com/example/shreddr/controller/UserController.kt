@@ -9,6 +9,8 @@ import com.google.firebase.database.FirebaseDatabase
 
 class UserController(private val chordChartController: ChordChartController)
 {
+    private val databaseInstance = FirebaseDatabase.getInstance()
+    private val userRef = databaseInstance.getReference("users")
 
     // Function to delete user
     fun deleteUser(onResult: (Int) -> Unit) {
@@ -19,12 +21,11 @@ class UserController(private val chordChartController: ChordChartController)
         {
             val userId = currentUser.uid
             // Reference to the location of the user in Firebase Realtime Database
-            val userRef = database.getReference("users").child(userId)
 
             chordChartController.getUserChordCharts { chordCharts ->
 
                 for (chart in chordCharts) {
-                    chordChartController.deleteChordChart(chart.chartID) {
+                    chordChartController.deleteChordChart(chart.getID()) {
                         if (it == 0) {
                             println("Chord chart deleted successfully")
                         } else {
