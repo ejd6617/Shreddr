@@ -2,6 +2,7 @@ package com.example.shreddr.view
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,21 +11,27 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuDefaults.outlinedTextFieldColors
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,6 +52,10 @@ class SearchScreen(
     private val userController: UserController,
     private var context: Context?)
 {
+    private var searchName = mutableStateOf("")
+    private var searchGenre = mutableStateOf("")
+    private var searchArtist = mutableStateOf("")
+
     @Composable
     fun DeleteUserButton() // implementation of the delete user button
     {
@@ -126,10 +137,14 @@ class SearchScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Search") },
+                    title = { Text("Search", color = Color(0xFFFDDCA9)) },
+                    modifier = Modifier.background(Color(0xFF562717)),
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color(0xFF562717)
+                    ),
                     actions = {
                         IconButton(onClick = { isTabVisible = !isTabVisible }) {
-                            Icon(Icons.Filled.MoreVert, contentDescription = "Toggle Tab")
+                            Icon(Icons.Filled.MoreVert, contentDescription = "Toggle Tab", tint = Color(0xFFFDDCA9))
                         }
                     }
                 )
@@ -139,28 +154,95 @@ class SearchScreen(
                     modifier = Modifier
                         .padding(innerPadding)
                         .fillMaxSize()
+                        .background(Color(0xFFFDDCA9))
                 ) {
                     // Show the tab only when `isTabVisible` is true
                     if (isTabVisible) {
                         TabContent()
+                    }
+                    Text("Search Criteria" , fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color(0xFFFDDCA9)), // Background color for the entire Row
+                        horizontalArrangement = Arrangement.SpaceBetween // Ensure space between the items
+                    ) {
+                        // First OutlinedTextField
+                        OutlinedTextField(
+                            value = searchName.value,
+                            onValueChange = { searchName.value = it },
+                            label = { Text("Name") },
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(end = 8.dp), // Padding between the text fields
+                            colors = outlinedTextFieldColors(
+                                focusedBorderColor = Color(0xFFE76219),
+                                unfocusedContainerColor = Color(0xFFE76219), // Use row background color
+                                focusedContainerColor = Color(0xFFE76219),
+                                unfocusedTextColor = Color(0xFFFDDCA9),
+                                focusedTextColor = Color(0xFFFDDCA9),
+                            )
+                        )
+
+                        // Second OutlinedTextField
+                        OutlinedTextField(
+                            value = searchGenre.value,
+                            onValueChange = { searchGenre.value = it },
+                            label = { Text("Genre") },
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(end = 8.dp), // Padding between the text fields
+                            colors = outlinedTextFieldColors(
+                                focusedBorderColor = Color(0xFFE76219),
+                                unfocusedContainerColor = Color(0xFFE76219), // Use row background color
+                                focusedContainerColor = Color(0xFFE76219),
+                                unfocusedTextColor = Color(0xFFFDDCA9),
+                                focusedTextColor = Color(0xFFFDDCA9),
+                            )
+                        )
+
+                        // Third OutlinedTextField
+                        OutlinedTextField(
+                            value = searchArtist.value,
+                            onValueChange = { searchArtist.value = it },
+                            label = { Text("Artist") },
+                            modifier = Modifier
+                                .weight(1f), // No padding here, just weight to ensure equal size
+                            colors = outlinedTextFieldColors(
+                                focusedBorderColor = Color(0xFFE76219),
+                                unfocusedContainerColor = Color(0xFFE76219), // Use row background color
+                                focusedContainerColor = Color(0xFFE76219),
+                                unfocusedTextColor = Color(0xFFFDDCA9),
+                                focusedTextColor = Color(0xFFFDDCA9),
+                            )
+                        )
+
+                        // IconButton
+                        IconButton(
+                            onClick = {},
+                            modifier = Modifier.weight(1f / 4f) // Adjust weight for icon button
+                        ) {
+                            Icon(Icons.Filled.Search, contentDescription = "Settings")
+                        }
                     }
                     Spacer(modifier = Modifier.weight(1f)) // Filler space
                 }
             },
             bottomBar = {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    modifier = Modifier.fillMaxWidth().padding(16.dp).background(Color(0xFFFEA712)),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     IconButton(onClick = {navController.navigate("manageChordChartScreen") }) {
-                        Icon(Icons.Filled.Settings, contentDescription = "Settings")
+                        Icon(Icons.Filled.Settings, contentDescription = "Settings", tint = Color(0xFF562717))
                     }
                     FloatingActionButton(onClick = {
-                        navController.navigate("addChordChartScreen") }) {
+                        navController.navigate("addChordChartScreen") }, containerColor = Color(0xFFC21717), contentColor = Color(0xFFFDDCA9)) {
                         Icon(Icons.Filled.Add, contentDescription = "Add")
                     }
                 }
-            }
+            },
+            containerColor = Color(0xFF562717)
         )
     }
 

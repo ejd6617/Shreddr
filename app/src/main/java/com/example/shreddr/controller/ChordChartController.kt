@@ -2,6 +2,7 @@ package com.example.shreddr.controller
 
 import androidx.compose.runtime.mutableStateListOf
 import com.example.shreddr.model.ChordChart
+import com.example.shreddr.model.ChordLyricPairs
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -12,16 +13,18 @@ class ChordChartController () {
     private val databaseInstance = FirebaseDatabase.getInstance()
     private val chordChartRef = databaseInstance.getReference("chord_charts")
 
-    fun saveChordChart(chart: ChordChart, onResult: (Int) -> Unit) {
+    fun saveChordChart(currentUserName: String, songName: String, artistName: String, selectedKey: String, chordsAndLyrics: List<ChordLyricPairs>, userID: String, onResult: (Int) -> Unit) {
         // Early return if the chart's name or artist is empty
-        if (chart.name.isEmpty()) {
+        if (songName == "") {
             onResult(-2)  // Song name cannot be empty
             return
-        } else if (chart.artist.isEmpty()) {
+        } else if (artistName == "") {
             onResult(-3)  // Artist name cannot be empty
             return
         }
 
+        //creates a new Chord Chart object
+        val chart = ChordChart(currentUserName, songName, artistName, selectedKey, chordsAndLyrics, userID, "")
         // Proceed with the Firebase operation only if the inputs are valid
         val songId = chordChartRef.push().key
         chart.chartID = songId ?: ""//sets the ID of the chart as a attribute of the chart

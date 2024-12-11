@@ -24,6 +24,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -59,12 +60,17 @@ class ManageChordChartsScreen(private val navController: NavController, private 
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Manage Chord Charts") },
+                    title = { Text("Manage Chord Charts", color = Color(0xFFFDDCA9)) },
+                    modifier = Modifier.background(Color(0xFF562717)),
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color(0xFF562717)
+                    )
+
 
                 )
             },
             content = { innerPadding ->
-                LazyColumn(modifier = Modifier.padding(innerPadding).background(Color(0xffc16cf7))) // Lazy columns allow for scrolling
+                LazyColumn(modifier = Modifier.padding(innerPadding).background(Color(0xFFFDDCA9))) // Lazy columns allow for scrolling
                 {
                     //for each chordChart
                     items(chordCharts.size) { index ->
@@ -73,17 +79,19 @@ class ManageChordChartsScreen(private val navController: NavController, private 
                 }
             },
             bottomBar = {
+
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    modifier = Modifier.fillMaxWidth().padding(16.dp).background(Color(0xFFFEA712)),
                     horizontalArrangement = Arrangement.SpaceBetween
                 )
                 {
                     IconButton(onClick = { navController.navigate("searchScreen") })
                     {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Go back")
+                        Icon(Icons.Filled.ArrowBack, contentDescription = "Go back", tint = Color(0xFFFDDCA9))
                     }
                 }
-            }
+            },
+            containerColor = Color(0xFF562717)
         )
 
 
@@ -95,20 +103,20 @@ class ManageChordChartsScreen(private val navController: NavController, private 
 
         var showDialog by remember { mutableStateOf(false) }
 
-        Column(modifier = Modifier.padding(16.dp).border(2.dp, Color.Black, shape = androidx.compose.foundation.shape.RoundedCornerShape(10.dp)).background(Color(0xff55028b)))
+        Column(modifier = Modifier.padding(16.dp).border(2.dp, Color.Black, shape = androidx.compose.foundation.shape.RoundedCornerShape(10.dp)).background(Color(0xFFE76219)))
         {
-            Text("  Chart Author: ${chart.author}", color = Color.LightGray)
-            Text("  Song Name: ${chart.name}", fontWeight = FontWeight.Bold, color = Color.LightGray)
+            Text("  Chart Author: ${chart.author}", color = Color(0xFFFDDCA9))
+            Text("  Song Name: ${chart.name}", fontWeight = FontWeight.Bold, color = Color(0xFFFDDCA9))
             Row(modifier = Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.Start)
             {
                 IconButton(onClick = { showDialog = true })
-                {Icon(Icons.Filled.Delete, contentDescription = "Delete")}
+                {Icon(Icons.Filled.Delete, contentDescription = "Delete", tint = Color(0xFFFDDCA9))}
                 IconButton(onClick = {
                     editChordChartScreen.setValue(chart)//edits the fields for the edit chord chart screen
                     navController.navigate("editChordChartScreen")
 
                 })
-                {Icon(Icons.Filled.Create, contentDescription = "Edit chart")}
+                {Icon(Icons.Filled.Create, contentDescription = "Edit chart", tint = Color(0xFFFDDCA9))}
 
             }
 

@@ -29,6 +29,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -81,11 +82,15 @@ class EditChordChartScreen(private val navController:  NavController, private va
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Edit Chord Chart") },
+                    title = { Text("Edit Chord Chart", color = Color(0xFFFDDCA9)) },
+                    modifier = Modifier.background(Color(0xFF562717)),
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color(0xFF562717)
+                    ),
                     actions =
                     {
                         IconButton(onClick = { isTabVisible = !isTabVisible })
-                        { Icon(Icons.Filled.Menu, contentDescription = "Chord Chart Data") }
+                        { Icon(Icons.Filled.Menu, contentDescription = "Chord Chart Data", tint = Color(0xFFFDDCA9)) }
                     }
                 )
             },
@@ -95,6 +100,7 @@ class EditChordChartScreen(private val navController:  NavController, private va
                         .padding(innerPadding)
                         .fillMaxSize()
                         .verticalScroll(scrollState)
+                        .background(Color(0xFFFDDCA9))
                 ) {
                     // Show the tab only when `isTabVisible` is true
                     if (isTabVisible) {
@@ -107,13 +113,14 @@ class EditChordChartScreen(private val navController:  NavController, private va
             },
             bottomBar = {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    modifier = Modifier.fillMaxWidth().padding(16.dp).background(Color(0xFFFEA712)),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     backButton()
                     uploadButton()
                 }
-            }
+            },
+            containerColor = Color(0xFF562717)
         )
     }
 
@@ -124,7 +131,7 @@ class EditChordChartScreen(private val navController:  NavController, private va
 
        // FloatingActionButton to trigger the dialog visibility
        IconButton(onClick = { backTabVisible = true }) {
-           Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go back")
+           Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go back", tint = Color(0xFFFDDCA9))
        }
 
        // Show AlertDialog when backTabVisible is true
@@ -180,9 +187,15 @@ class EditChordChartScreen(private val navController:  NavController, private va
 
             Button(
                 onClick = { addPair() },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = Color(0xFFC21717), contentColor = Color(0xFFFDDCA9))
             )
             {  Text("Add Another Pair")}
+            Button(onClick = { removePair() }, modifier = Modifier.fillMaxWidth(),
+                colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = Color(0xFFC21717), contentColor = Color(0xFFFDDCA9)))
+            {
+                Text("Remove Pair")
+            }
 
         }
 
@@ -193,13 +206,19 @@ class EditChordChartScreen(private val navController:  NavController, private va
         chordsAndLyrics.add(ChordLyricPairs())
     }
 
+    fun removePair()
+    {
+        chordsAndLyrics.removeLast()
+    }
+
+
     @Composable
     fun uploadButton()
     {
         val context = LocalContext.current
         var uploadConfirmationTabVisible by remember {mutableStateOf(false)}
 
-        FloatingActionButton(onClick = { uploadConfirmationTabVisible = true }) {
+        FloatingActionButton(onClick = { uploadConfirmationTabVisible = true }, containerColor = Color(0xFFC21717), contentColor = Color(0xFFFDDCA9)) {
             Icon(Icons.Filled.Share, contentDescription = "Add")
         }
 
@@ -212,8 +231,7 @@ class EditChordChartScreen(private val navController:  NavController, private va
                 confirmButton = {
                     Button(
                         onClick = {
-                            val chordChart = ChordChart(author, name.value, artist.value, key.value, chordsAndLyrics, FirebaseAuth.getInstance().currentUser?.uid, "")
-                            chordChartController.saveChordChart(chordChart){onResult ->
+                            chordChartController.saveChordChart(author.toString(), name.value, artist.value, key.value, chordsAndLyrics, FirebaseAuth.getInstance().currentUser?.uid.toString(),){onResult ->
                                 when(onResult)// outer swtich statement
                                 {
                                     0 ->{ //if the upload succeeds, proceed to delete the old chord chart
@@ -259,7 +277,8 @@ class EditChordChartScreen(private val navController:  NavController, private va
 
 
         Column(
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.background(Color(0xFFFDDCA9))
         )
         {
             Text("Author: ${author}")

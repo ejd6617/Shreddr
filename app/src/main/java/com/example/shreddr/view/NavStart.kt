@@ -24,8 +24,9 @@ class NavStart : ComponentActivity() {
 
 
                 //initalizing controllers
-                val userController = UserController()
+
                 val chordChartController = ChordChartController()
+                val userController = UserController(chordChartController)
 
 
                 //initalizing screens
