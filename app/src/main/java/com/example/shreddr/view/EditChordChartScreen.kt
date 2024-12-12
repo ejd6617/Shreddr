@@ -160,25 +160,51 @@ class EditChordChartScreen(private val navController:  NavController, private va
 
    }
 
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun ChordsAndLyrics()
     {
         Column(modifier = Modifier.fillMaxWidth().padding(16.dp))
         {
-            chordsAndLyrics.forEachIndexed { index, _ ->
-                //display a text field for each member in the pair
-                //first is chord, second is lyrics
-                TextField(
-                    value = chordsAndLyrics[index].chords, onValueChange = { newChord ->
-                        chordsAndLyrics[index].changeChords(newChord)
-                    },
+            chordsAndLyrics.forEachIndexed { index, pair ->
+                // Chord Dropdown
+                var chordExpanded by remember { mutableStateOf(false) }
 
-                    label = { Text("Chord ${index + 1}") },
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
-                )
+                ExposedDropdownMenuBox(
+                    expanded = chordExpanded,
+                    onExpandedChange = {
+                        chordExpanded = !chordExpanded
+                    }
+                ) {
+                    TextField(
+                        value = chordsAndLyrics[index].chords,
+                        onValueChange = {},  // No change needed here, we use dropdown to change the value
+                        readOnly = true,
+                        label = { Text("Chord ${index + 1}") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = chordExpanded) },
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp).menuAnchor()
+                    )
 
+                    ExposedDropdownMenu(
+                        expanded = chordExpanded,
+                        onDismissRequest = { chordExpanded = false }
+                    ) {
+                        songKeys.forEach { item ->
+                            DropdownMenuItem(
+                                text = { Text(text = item) },
+                                onClick = {
+                                    chordsAndLyrics[index].changeChords(item)  // Update chord
+                                    chordExpanded = false  // Close dropdown
+                                }
+                            )
+                        }
+                    }
+                }
+
+                // Lyrics TextField
                 TextField(
-                    value = chordsAndLyrics[index].lyrics, onValueChange = { newLyrics ->
+                    value = chordsAndLyrics[index].lyrics,
+                    onValueChange = { newLyrics ->
                         chordsAndLyrics[index].changeLyrics(newLyrics)
                     },
                     label = { Text("Lyrics ${index + 1}") },
@@ -192,6 +218,7 @@ class EditChordChartScreen(private val navController:  NavController, private va
                 colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = Color(0xFFC21717), contentColor = Color(0xFFFDDCA9))
             )
             {  Text("Add Another Pair")}
+
             Button(onClick = { removePair() }, modifier = Modifier.fillMaxWidth(),
                 colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = Color(0xFFC21717), contentColor = Color(0xFFFDDCA9)))
             {
@@ -199,7 +226,6 @@ class EditChordChartScreen(private val navController:  NavController, private va
             }
 
         }
-
     }
 
     fun addPair()
