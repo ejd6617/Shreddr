@@ -47,7 +47,7 @@ class NavStart : ComponentActivity() {
                     composable("addChordChartScreen") { addChordChartScreen.addChordChartScreen() } // defines the "addChordChartScreen" tag as the addChordChartScreen function of the AddChordChartScreen")
                     composable("manageChordChartScreen") { manageChordChartsScreen.manageChordChartsScreen() } // defines the "manageChordChartScreen" tag as the manageChordChartsScreen function of the ManageChordChartsScreen")
                     composable("editChordChartScreen") { editChordChartScreen.editChordChartScreen() } // defines the "editChordChartScreen" tag as the editChordChartScreen function of the EditChordChartScreen")
-                    composable("displayChordChartScreen") { displayScreen.DisplayScreen() } // defines the "displayChordChartScreen" tag as the displayChordChartScreen function of the DisplayChordChartScreen")
+                    composable("displayChordChartScreen") { displayScreen.displayScreen() } // defines the "displayChordChartScreen" tag as the displayChordChartScreen function of the DisplayChordChartScreen")
                 }
             }
         }

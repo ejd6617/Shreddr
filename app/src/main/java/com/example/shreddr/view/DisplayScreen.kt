@@ -33,7 +33,7 @@ class DisplayScreen(private val navController: NavController) {
 
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
     @Composable
-    fun DisplayScreen() {
+    fun displayScreen() {
         val chordChart = getSelectedChordChart()
         val showDialog = remember { mutableStateOf(false) }
         val dropdownExpanded = remember { mutableStateOf(false) }
