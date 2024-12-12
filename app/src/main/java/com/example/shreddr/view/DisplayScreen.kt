@@ -82,8 +82,10 @@ class DisplayScreen(private val navController: NavController) {
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Text(pair.chords, color = Color.Black)
-                            Text(pair.lyrics, color = Color.Black)
+                            Column{
+                                Text(pair.chords, color = Color.Black)
+                                Text(pair.lyrics, color = Color.Black)
+                            }
                         }
                     }
                 }
