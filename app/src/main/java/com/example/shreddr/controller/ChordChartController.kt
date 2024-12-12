@@ -10,8 +10,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 class ChordChartController () {
+
     private val databaseInstance = FirebaseDatabase.getInstance()
     private val chordChartRef = databaseInstance.getReference("chord_charts")
+
 
     fun saveChordChart(currentUserName: String, songName: String, artistName: String, selectedKey: String, chordsAndLyrics: List<ChordLyricPairs>, userID: String, onResult: (Int) -> Unit) {
         // Early return if the chart's name or artist is empty
@@ -98,5 +100,15 @@ class ChordChartController () {
             }
         }
 
+    }
+
+    companion object {
+        private var selectedChordChart = ChordChart()
+        fun setSelectedChordChart(chart: ChordChart) {
+            selectedChordChart = chart
+        }
+        fun getSelectedChordChart(): ChordChart {
+            return selectedChordChart
+        }
     }
 }

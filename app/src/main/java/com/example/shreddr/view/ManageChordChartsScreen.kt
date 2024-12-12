@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,8 +39,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import com.example.shreddr.controller.ChordChartController
+import com.example.shreddr.controller.ChordChartController.Companion.setSelectedChordChart
 import com.example.shreddr.model.ChordChart
 
 class ManageChordChartsScreen(private val navController: NavController, private val chordChartController: ChordChartController, private val editChordChartScreen: EditChordChartScreen)
@@ -108,7 +111,7 @@ class ManageChordChartsScreen(private val navController: NavController, private 
     @Composable
     fun chordChartItem(chart: ChordChart) {
         val context = LocalContext.current
-        val updateScreen = remember{ mutableStateOf(false)}
+        val updateScreen = remember { mutableStateOf(false) }
 
         var showDialog by remember { mutableStateOf(false) }
 
@@ -116,19 +119,38 @@ class ManageChordChartsScreen(private val navController: NavController, private 
         {
             Text("  Chart Author: ${chart.author}", color = Color(0xFFFDDCA9))
             Text("  Song Name: ${chart.name}", fontWeight = FontWeight.Bold, color = Color(0xFFFDDCA9))
-            Row(modifier = Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.Start)
-            {
-                IconButton(onClick = { showDialog = true })
-                {Icon(Icons.Filled.Delete, contentDescription = "Delete", tint = Color(0xFFFDDCA9))}
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                IconButton(onClick = { showDialog = true }) {
+                    Icon(
+                        Icons.Filled.Delete,
+                        contentDescription = "Delete",
+                        tint = Color(0xFFFDDCA9)
+                    )
+                }
                 IconButton(onClick = {
-                    editChordChartScreen.setValue(chart)//edits the fields for the edit chord chart screen
+                    editChordChartScreen.setValue(chart) //edits the fields for the edit chord chart screen
                     navController.navigate("editChordChartScreen")
-
-                })
-                {Icon(Icons.Filled.Create, contentDescription = "Edit Chart", tint = Color(0xFFFDDCA9))}
-
+                }) {
+                    Icon(
+                        Icons.Filled.Create,
+                        contentDescription = "Edit Chart",
+                        tint = Color(0xFFFDDCA9)
+                    )
+                }
+                // Fixed navigation with argument passing
+                setSelectedChordChart(chart)
+                IconButton(onClick = {
+                    setSelectedChordChart(chart)
+                    navController.navigate("displayChordChartScreen")
+                }) {
+                    Icon(Icons.Filled.ExitToApp, contentDescription = "View Chart", tint = Color(0xFFFDDCA9))
+                }
             }
-
         }
 
         if (showDialog)
@@ -140,21 +162,21 @@ class ManageChordChartsScreen(private val navController: NavController, private 
                 confirmButton = {
                     Button(
                         onClick = {
-                           chordChartController.deleteChordChart(chart.chartID) {onResult ->
-                               when(onResult)
-                               {
-                                   0 -> {
-                                       chordCharts = chordCharts.filter { it != chart }.toMutableStateList()//instead of removing from list, filter instead to trigger recomposition
-                                       listUpdate.value = true//triggers recomposition
-                                       Toast.makeText(context, "Chart deleted successfully", Toast.LENGTH_SHORT).show()
+                            chordChartController.deleteChordChart(chart.chartID) { onResult ->
+                                when(onResult)
+                                {
+                                    0 -> {
+                                        chordCharts = chordCharts.filter { it != chart }.toMutableStateList()//instead of removing from list, filter instead to trigger recomposition
+                                        listUpdate.value = true//triggers recomposition
+                                        Toast.makeText(context, "Chart deleted successfully", Toast.LENGTH_SHORT).show()
 
-                                   }
-                                   -1 -> {
-                                       Toast.makeText(context, "Failed to delete chart", Toast.LENGTH_SHORT).show()
-                                   }
+                                    }
+                                    -1 -> {
+                                        Toast.makeText(context, "Failed to delete chart", Toast.LENGTH_SHORT).show()
+                                    }
 
-                               }
-                           }
+                                }
+                            }
                             showDialog = false
                         }) {
                         Text("Yes")
