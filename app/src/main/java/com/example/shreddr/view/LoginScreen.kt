@@ -114,7 +114,7 @@ class LoginScreen(
 
                 // Logo Image centered above the text fields
                 Image(
-                    painter = painterResource(id = R.drawable.logo), // Your logo image
+                    painter = painterResource(id = R.drawable.logo_2), // Your logo image
                     contentDescription = "Logo",
                     modifier = Modifier
                         .size(300.dp) // Adjust size as needed
