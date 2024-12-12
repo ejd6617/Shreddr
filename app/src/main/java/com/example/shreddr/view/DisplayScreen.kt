@@ -73,6 +73,7 @@ class DisplayScreen(private val navController: NavController) {
                     // Display the artist and key
                     Text("Artist: ${chordChart.artist}", color = Color.Black)
                     Text("Key: ${chordChart.key}", color = Color.Black)
+                    Text("Genre: ${chordChart.genre}", color = Color.Black)
                     Spacer(modifier = Modifier.padding(8.dp))
 
                     // Display the chords and lyrics
