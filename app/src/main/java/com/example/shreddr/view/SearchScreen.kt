@@ -149,6 +149,8 @@ class SearchScreen(
     fun searchScreen() {
         // Track if data has been updated
         var isDataUpdated by remember { mutableStateOf(false) }
+        var isTabVisible by remember { mutableStateOf(false) }
+
 
         // This state will hold the fetched chord charts
         val chordCharts = remember { mutableStateListOf<ChordChart>() }
@@ -165,7 +167,7 @@ class SearchScreen(
                         containerColor = Color(0xFF562717)
                     ),
                     actions = {
-                        IconButton(onClick = { /* Handle toggle */ }) {
+                        IconButton(onClick = { isTabVisible = !isTabVisible }) {
                             Icon(Icons.Filled.MoreVert, contentDescription = "Toggle Tab", tint = Color(0xFFFDDCA9))
                         }
                     }
@@ -178,6 +180,10 @@ class SearchScreen(
                         .fillMaxSize()
                         .background(Color(0xFFFDDCA9))
                 ) {
+                    // Show the tab only when `isTabVisible` is true
+                    if (isTabVisible) {
+                        TabContent()
+                    }
                     Text("Search Criteria", fontWeight = FontWeight.Bold)
                     Row(
                         modifier = Modifier
