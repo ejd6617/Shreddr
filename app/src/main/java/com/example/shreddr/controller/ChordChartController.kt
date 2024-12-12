@@ -7,9 +7,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 
-class ChordChartController () {
+class ChordChartController() {
 
     private val databaseInstance = FirebaseDatabase.getInstance()
     private val chordChartRef = databaseInstance.getReference("chord_charts")
@@ -49,8 +50,7 @@ class ChordChartController () {
 
     }
 
-    fun getUserChordCharts(onResult: (List<ChordChart>) -> Unit)
-    {
+    fun getUserChordCharts(onResult: (List<ChordChart>) -> Unit) {
         val userChartRef = FirebaseDatabase.getInstance().reference.child("chord_charts") //get a reference to the chord charts section of the database
         val currentUser = FirebaseAuth.getInstance().currentUser//get the current user
 
@@ -79,32 +79,27 @@ class ChordChartController () {
         )
     }
 
-    fun deleteChordChart(chartId: String, onDeleteResult: (Int) -> Unit)
-    {
+    fun deleteChordChart(chartId: String, onDeleteResult: (Int) -> Unit) {
         val chartRef = FirebaseDatabase.getInstance().reference.child("chord_charts")
         val chartToDeleteRef = chartRef.child(chartId)
 
-        chartToDeleteRef.removeValue().addOnCompleteListener {task ->
-
-            if (task.isSuccessful)
-            {
+        chartToDeleteRef.removeValue().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
                 onDeleteResult(0)
                 //chart removal successful
                 return@addOnCompleteListener
-            }
-            else
-            {
+            } else {
                 onDeleteResult(-1)
                 return@addOnCompleteListener
-
             }
         }
 
     }
 
     fun getChordChartsByCriteria(name: String, artist: String, genre: String, onResult: (List<ChordChart>) -> Unit) {
-        val query = chordChartRef.orderByChild("name")  // You can still order by name, as it's the most commonly used field for searching.
+        var query: Query = chordChartRef
 
+        // Execute the query
         query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val filteredChordCharts = mutableListOf<ChordChart>()
@@ -112,17 +107,17 @@ class ChordChartController () {
                 for (dataSnapshot in snapshot.children) {
                     val chart = dataSnapshot.getValue(ChordChart::class.java)
                     if (chart != null) {
-                        // Apply filters on name, artist, and genre after retrieving data
+                        // Check if the chart matches all criteria
                         val matchesName = name.isEmpty() || chart.name.contains(name, ignoreCase = true)
                         val matchesArtist = artist.isEmpty() || chart.artist.contains(artist, ignoreCase = true)
                         val matchesGenre = genre.isEmpty() || chart.genre.contains(genre, ignoreCase = true)
 
-                        // Add chart to filtered list if it matches all given criteria
                         if (matchesName && matchesArtist && matchesGenre) {
                             filteredChordCharts.add(chart)
                         }
                     }
                 }
+
                 onResult(filteredChordCharts)
             }
 
@@ -131,7 +126,6 @@ class ChordChartController () {
             }
         })
     }
-
 
 
     companion object {

@@ -240,7 +240,7 @@ class SearchScreen(
                                 isDataUpdated = true
 
                                 // Fetch chord charts based on search criteria
-                                chordChartController.getChordChartsByCriteria(searchName.value, searchGenre.value, searchArtist.value) { fetchedChordCharts ->
+                                chordChartController.getChordChartsByCriteria(name = searchName.value, genre = searchGenre.value, artist = searchArtist.value) { fetchedChordCharts ->
                                     // Update state with new fetched data
                                     chordCharts.clear()
                                     chordCharts.addAll(fetchedChordCharts)
