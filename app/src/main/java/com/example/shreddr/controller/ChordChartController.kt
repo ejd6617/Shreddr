@@ -15,7 +15,7 @@ class ChordChartController () {
     private val chordChartRef = databaseInstance.getReference("chord_charts")
 
 
-    fun saveChordChart(currentUserName: String, songName: String, artistName: String, selectedKey: String, chordsAndLyrics: List<ChordLyricPairs>, userID: String, onResult: (Int) -> Unit) {
+    fun saveChordChart(currentUserName: String, songName: String, artistName: String, selectedKey: String, chordsAndLyrics: List<ChordLyricPairs>, userID: String, genre: String, onResult: (Int) -> Unit) {
         // Early return if the chart's name or artist is empty
         if (songName == "") {
             onResult(-2)  // Song name cannot be empty
@@ -26,7 +26,7 @@ class ChordChartController () {
         }
 
         //creates a new Chord Chart object
-        val chart = ChordChart(currentUserName, songName, artistName, selectedKey, chordsAndLyrics, userID, "")
+        val chart = ChordChart(currentUserName, songName, artistName, selectedKey, chordsAndLyrics, userID, "", genre)
         // Proceed with the Firebase operation only if the inputs are valid
         val songId = chordChartRef.push().key
         chart.chartID = songId ?: ""
@@ -101,6 +101,38 @@ class ChordChartController () {
         }
 
     }
+
+    fun getChordChartsByCriteria(name: String, artist: String, genre: String, onResult: (List<ChordChart>) -> Unit) {
+        val query = chordChartRef.orderByChild("name")  // You can still order by name, as it's the most commonly used field for searching.
+
+        query.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val filteredChordCharts = mutableListOf<ChordChart>()
+
+                for (dataSnapshot in snapshot.children) {
+                    val chart = dataSnapshot.getValue(ChordChart::class.java)
+                    if (chart != null) {
+                        // Apply filters on name, artist, and genre after retrieving data
+                        val matchesName = name.isEmpty() || chart.name.contains(name, ignoreCase = true)
+                        val matchesArtist = artist.isEmpty() || chart.artist.contains(artist, ignoreCase = true)
+                        val matchesGenre = genre.isEmpty() || chart.genre.contains(genre, ignoreCase = true)
+
+                        // Add chart to filtered list if it matches all given criteria
+                        if (matchesName && matchesArtist && matchesGenre) {
+                            filteredChordCharts.add(chart)
+                        }
+                    }
+                }
+                onResult(filteredChordCharts)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle the error
+            }
+        })
+    }
+
+
 
     companion object {
         private var selectedChordChart = ChordChart()

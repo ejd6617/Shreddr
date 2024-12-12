@@ -62,6 +62,7 @@ class AddChordChartScreen(private val navController: NavController, private val 
     private val songKeys = listOf("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B")
     private var chordsAndLyrics = mutableStateListOf(ChordLyricPairs())
     private var selectedKey = mutableStateOf("C")
+    private var genre = mutableStateOf("")
 
 
 
@@ -142,7 +143,13 @@ class AddChordChartScreen(private val navController: NavController, private val 
                 onValueChange = { artistName.value = it },
                 label = { Text("Song Artist") },
                 modifier = Modifier.fillMaxWidth().background(Color.White),
-                )
+            )
+            OutlinedTextField(
+                value = genre.value,
+                onValueChange = { genre.value = it },
+                label = { Text("Genre") },
+                modifier = Modifier.fillMaxWidth().background(Color.White),
+            )
             Spacer(modifier = Modifier.padding(2.dp))
             keyMenu()
 
@@ -294,7 +301,7 @@ class AddChordChartScreen(private val navController: NavController, private val 
                 confirmButton = {
                     Button(
                         onClick = {
-                            chordChartController.saveChordChart(currentUser?.email.toString(), songName.value, artistName.value, selectedKey.value, chordsAndLyrics, currentUser?.uid.toString() ) { errorCode ->
+                            chordChartController.saveChordChart(currentUser?.email.toString(), songName.value, artistName.value, selectedKey.value, chordsAndLyrics, currentUser?.uid.toString(), genre = genre.value ) { errorCode ->
                                 when(errorCode) {
                                     0 -> {Toast.makeText( context,  "Chord Chart Successfully Uploaded!",  Toast.LENGTH_SHORT).show()
                                         uploadConfirmationTabVisible = false

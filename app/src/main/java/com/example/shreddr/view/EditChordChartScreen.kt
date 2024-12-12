@@ -55,6 +55,7 @@ class EditChordChartScreen(private val navController:  NavController, private va
     private  var chordsAndLyrics = mutableStateListOf<ChordLyricPairs>()
     private val songKeys = listOf("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B")
     private var chartID = ""
+    private var genre = mutableStateOf("")
 
     fun setValue(chart: ChordChart)
     {
@@ -231,7 +232,7 @@ class EditChordChartScreen(private val navController:  NavController, private va
                 confirmButton = {
                     Button(
                         onClick = {
-                            chordChartController.saveChordChart(author.toString(), name.value, artist.value, key.value, chordsAndLyrics, FirebaseAuth.getInstance().currentUser?.uid.toString(),){onResult ->
+                            chordChartController.saveChordChart(author.toString(), name.value, artist.value, key.value, chordsAndLyrics, FirebaseAuth.getInstance().currentUser?.uid.toString(), genre = genre.value){onResult ->
                                 when(onResult)// outer swtich statement
                                 {
                                     0 ->{ //if the upload succeeds, proceed to delete the old chord chart
@@ -294,6 +295,12 @@ class EditChordChartScreen(private val navController:  NavController, private va
                 value = artist.value,
                 onValueChange = { artist.value = it },
                 label = { Text("Song Artist") },
+                modifier = Modifier.fillMaxWidth().background(Color.White),
+            )
+            OutlinedTextField(
+                value = genre.value,
+                onValueChange = { genre.value = it },
+                label = { Text("Genre") },
                 modifier = Modifier.fillMaxWidth().background(Color.White),
             )
             Spacer(modifier = Modifier.padding(2.dp))

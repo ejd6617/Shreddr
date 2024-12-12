@@ -9,17 +9,18 @@ data class ChordChart(
     var key: String,
     val chordsAndLyrics: List<ChordLyricPairs> = listOf(),
     val userId: String? = null,
-    var chartID: String
+    var chartID: String,
+    var genre: String
 )
 {
     fun transpose(newKey: String = "") {
         for (chordLyricPair in chordsAndLyrics) {
             chordLyricPair.transpose(key, newKey)
-            this.key = newKey;
         }
+        this.key = newKey;
     }
 
-    constructor() : this(null, "", "", "", listOf(), null, "")
+    constructor() : this(null, "", "", "", listOf(), null, "", "")
 
 
 

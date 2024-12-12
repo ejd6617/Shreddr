@@ -34,7 +34,7 @@ class NavStart : ComponentActivity() {
                 val addChordChartScreen = AddChordChartScreen(navController, chordChartController)
                 val editChordChartScreen = EditChordChartScreen(navController, chordChartController)
                 val manageChordChartsScreen = ManageChordChartsScreen(navController, chordChartController, editChordChartScreen)
-                val searchScreen = SearchScreen(navController, userController, null)
+                val searchScreen = SearchScreen(navController, userController, null, chordChartController, editChordChartScreen)
                 val displayScreen = DisplayScreen(navController)
 
 
