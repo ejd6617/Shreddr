@@ -74,5 +74,6 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.ui.auth)
+    implementation("io.coil-kt:coil-compose:2.2.2")
 
 }
