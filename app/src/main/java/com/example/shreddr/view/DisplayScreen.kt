@@ -33,6 +33,8 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.shreddr.controller.ChordChartController.Companion.getSelectedChordChart
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import coil.compose.SubcomposeAsyncImage
 
 class DisplayScreen(private val navController: NavController) {
@@ -141,6 +143,23 @@ class DisplayScreen(private val navController: NavController) {
                                 ) {
                                     Text(if (selectedKey.value.isEmpty()) "Select Key" else selectedKey.value)
                                 }
+                                DropdownMenu(
+                                    expanded = dropdownExpanded.value,
+                                    onDismissRequest = { dropdownExpanded.value = false }
+
+                                ) {
+                                    possibleKeys.forEach { key ->
+                                        DropdownMenuItem(
+                                            text = { Text(text = key) },
+                                            onClick = {
+                                                selectedKey.value = key
+                                                chordChart.transpose(key)
+                                                dropdownExpanded.value = false
+                                            }
+                                        )
+
+                                    }
+                                }
                             }
                         },
                         confirmButton = {
@@ -152,6 +171,7 @@ class DisplayScreen(private val navController: NavController) {
                         }
                     )
                 }
+
 
                 if (showImageDialog.value) {
                     Dialog(onDismissRequest = { showImageDialog.value = false }) {
