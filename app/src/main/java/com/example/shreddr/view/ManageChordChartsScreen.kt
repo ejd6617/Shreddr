@@ -1,7 +1,7 @@
 package com.example.shreddr.view
 
+// Import packages
 import android.widget.Toast
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Create
@@ -32,14 +31,12 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import com.example.shreddr.controller.ChordChartController
 import com.example.shreddr.controller.ChordChartController.Companion.setSelectedChordChart
@@ -52,7 +49,7 @@ class ManageChordChartsScreen(private val navController: NavController, private 
     private var listUpdate = mutableStateOf(false)
 
 
-
+    // Main function to for the manage chord charts screen
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun manageChordChartsScreen() {
@@ -108,6 +105,7 @@ class ManageChordChartsScreen(private val navController: NavController, private 
 
     }
 
+    // Function to display a single chord chart item
     @Composable
     fun chordChartItem(chart: ChordChart) {
         val context = LocalContext.current
@@ -153,6 +151,7 @@ class ManageChordChartsScreen(private val navController: NavController, private 
             }
         }
 
+        // Popup verification to delete a chord chart
         if (showDialog)
         {
             AlertDialog(
@@ -189,9 +188,5 @@ class ManageChordChartsScreen(private val navController: NavController, private 
                 }
             )
         }
-
-
     }
-
-
 }

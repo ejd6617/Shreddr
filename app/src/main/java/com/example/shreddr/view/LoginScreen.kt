@@ -143,10 +143,4 @@ class LoginScreen(
             }
         }
     }
-
-
-
-
 }
-
-

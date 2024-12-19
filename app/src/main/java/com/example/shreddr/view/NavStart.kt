@@ -1,5 +1,6 @@
 package com.example.shreddr.view
 
+// Import packages
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,27 +9,24 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.shreddr.controller.ChordChartController
 import com.example.shreddr.controller.UserController
-
-
 import com.example.shreddr.ui.theme.ShreddrTheme
 
-//this class controls the navigation flow between screens. It also defines the start screen "signInWindow"
+// This class controls the navigation flow between screens. It also defines the start screen "signInWindow"
 class NavStart : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             ShreddrTheme {
-                //initalizing nav controller
+                // Initializing nav controller
                 val navController = rememberNavController()
 
-                //initalizing controllers
-
+                // Initializing controllers
                 val chordChartController = ChordChartController()
                 val userController = UserController(chordChartController)
 
 
-                //initalizing screens
+                // Initializing screens
                 val loginScreen = LoginScreen(navController, userController, null)
                 val registrationScreen = RegistrationScreen(navController, userController, null)
                 val addChordChartScreen = AddChordChartScreen(navController, chordChartController)
@@ -36,7 +34,6 @@ class NavStart : ComponentActivity() {
                 val manageChordChartsScreen = ManageChordChartsScreen(navController, chordChartController, editChordChartScreen)
                 val searchScreen = SearchScreen(navController, userController, null, chordChartController, editChordChartScreen)
                 val displayScreen = DisplayScreen(navController)
-
 
 
                 NavHost(navController = navController, startDestination = "signInWindow") { //assigns the start screen to the "signInWindow" tag

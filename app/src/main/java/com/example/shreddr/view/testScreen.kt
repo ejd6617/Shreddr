@@ -1,5 +1,6 @@
 package com.example.shreddr.view
 
+// Import packages
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,14 +25,14 @@ import com.example.shreddr.R
 @Composable
 fun testScreen(navController: NavController)
 {
-    Box(modifier = Modifier.fillMaxSize()) { //Creates a Box object to store the image and other composables
+    Box(modifier = Modifier.fillMaxSize()) { //Creates a Box object to store the image and other composable objects
         Image(
             painter = painterResource(id = R.drawable.ternip),
             contentDescription = "background",
             modifier = Modifier.matchParentSize(),
             contentScale = ContentScale.Crop
         )
-        // Other composables (like your button) can go here
+        // Other composable objects (like the button) can go here
         Column(modifier = Modifier.align(Alignment.Center)) {
             secondButton(navController)
         }
@@ -49,6 +50,3 @@ fun secondButton(navController: NavController)
        shape = RoundedCornerShape(8.dp)
    ) {Text("Go Back!", color = Color.Black)}
 }
-
-
-

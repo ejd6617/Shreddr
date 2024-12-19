@@ -12,13 +12,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Create
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
@@ -34,7 +31,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -73,8 +69,9 @@ class SearchScreen(
     private var listUpdate = mutableStateOf(false)
 
 
+    // Implementation of the delete user button
     @Composable
-    fun DeleteUserButton() // implementation of the delete user button
+    fun DeleteUserButton()
     {
         context = LocalContext.current
         var showDialog by remember { mutableStateOf(false) }
@@ -96,12 +93,12 @@ class SearchScreen(
                 confirmButton = {
                     Button(
                         onClick = {
-                            //this syntax is everywhere - what's going on is that Firebase API calls are asyncronous operations, so we need to wait for them to finish before continuing.
-                            //the deleteUser function with it's last argument essentailly makes the API call an syncronous operation, so that the progrom waits for it's completeion before continuing.
-                            //if this wasnt present, the function would return multiple times with different values, so this makes the app run smoother
+                            // This syntax is everywhere: Firebase API calls are asynchronous operations, so we need to wait for them to finish before continuing.
+                            // The deleteUser function with its last argument essentially makes the API call a synchronous operation, so that the program waits for its completion before continuing.
+                            // If this was not present, the function would return multiple times with different values, so this makes the app run more smoothly
                             userController.deleteUser() {
                                     errorCode  ->
-                                //this is switch statement syntax
+                                // Switch statement
                                 when (errorCode) {
                                     0 -> navController.navigate("signInWindow")
                                     -1 -> Toast.makeText(
@@ -144,6 +141,7 @@ class SearchScreen(
 
     }
 
+    // Set up function to handle displaying the search chord charts screen
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun searchScreen() {
@@ -293,7 +291,7 @@ class SearchScreen(
     }
 
 
-
+    // Set up function to display a single chord chart item
     @Composable
     fun chordChartItem(chart: ChordChart) {
         val context = LocalContext.current
@@ -391,18 +389,5 @@ class SearchScreen(
             colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
             shape = RoundedCornerShape(8.dp)
         ) {Text("Log Out", color = Color.White)}
-
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
