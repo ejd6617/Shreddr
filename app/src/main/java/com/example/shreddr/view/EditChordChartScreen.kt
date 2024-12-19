@@ -1,5 +1,6 @@
 package com.example.shreddr.view
 
+// Import packages
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -48,6 +49,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 class EditChordChartScreen(private val navController:  NavController, private val  chordChartController: ChordChartController) {
 
+    // Initialize variables to store user inputs
     private  var author : String? = FirebaseAuth.getInstance().currentUser?.email
     private  var name = mutableStateOf("")
     private  var artist = mutableStateOf("")
@@ -57,6 +59,7 @@ class EditChordChartScreen(private val navController:  NavController, private va
     private var chartID = ""
     private var genre = mutableStateOf("")
 
+    // Set up function to set values according to inputs
     fun setValue(chart: ChordChart)
     {
         name = mutableStateOf(chart.name)
@@ -64,18 +67,13 @@ class EditChordChartScreen(private val navController:  NavController, private va
         key = mutableStateOf(chart.key)
         chordsAndLyrics =  mutableStateListOf(*chart.chordsAndLyrics.toTypedArray()) // i have no idea why this works but it does???
         chartID = chart.chartID
-
     }
 
-
-
-
-
+    // Set up function to set up the edit chord chart screen
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun editChordChartScreen()
     {
-
 
         var isTabVisible by remember { mutableStateOf(false) }
         val scrollState = rememberScrollState()
@@ -228,11 +226,13 @@ class EditChordChartScreen(private val navController:  NavController, private va
         }
     }
 
+    // Function to add a new pair of chords and lyrics
     fun addPair()
     {
         chordsAndLyrics.add(ChordLyricPairs())
     }
 
+    // Function to remove the last pair of chords and lyrics
     fun removePair()
     {
         chordsAndLyrics.removeLast()
@@ -372,9 +372,4 @@ class EditChordChartScreen(private val navController:  NavController, private va
             }
         }
     }
-
-
-
-
-
 }

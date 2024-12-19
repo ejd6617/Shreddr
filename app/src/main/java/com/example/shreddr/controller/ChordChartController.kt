@@ -1,7 +1,6 @@
 package com.example.shreddr.controller
 
 // Import packages
-import androidx.compose.runtime.mutableStateListOf
 import com.example.shreddr.model.ChordChart
 import com.example.shreddr.model.ChordLyricPairs
 import com.google.firebase.auth.FirebaseAuth
@@ -13,10 +12,11 @@ import com.google.firebase.database.ValueEventListener
 
 class ChordChartController() {
 
+    // Create database reference
     private val databaseInstance = FirebaseDatabase.getInstance()
     private val chordChartRef = databaseInstance.getReference("chord_charts")
 
-
+    // Function to save a chord chart
     fun saveChordChart(currentUserName: String, songName: String, artistName: String, selectedKey: String, chordsAndLyrics: List<ChordLyricPairs>, userID: String, genre: String, onResult: (Int) -> Unit) {
         // Early return if the chart's name or artist is empty
         if (songName == "") {
@@ -27,7 +27,7 @@ class ChordChartController() {
             return
         }
 
-        //creates a new Chord Chart object
+        // Creates a new Chord Chart object
         val chart = ChordChart(currentUserName, songName, artistName, selectedKey, chordsAndLyrics, userID, "", genre)
         // Proceed with the Firebase operation only if the inputs are valid
         val songId = chordChartRef.push().key
@@ -48,14 +48,14 @@ class ChordChartController() {
             println("Failed to generate song ID")
             onResult(-1)
         }
-
     }
 
+    // Return a list of chord charts associated with a user
     fun getUserChordCharts(onResult: (List<ChordChart>) -> Unit) {
         val userChartRef = FirebaseDatabase.getInstance().reference.child("chord_charts") //get a reference to the chord charts section of the database
         val currentUser = FirebaseAuth.getInstance().currentUser//get the current user
 
-        //gather a list of all chord charts that match the currently logged in user's ID
+        // Gather a list of all chord charts that match the currently logged in user's ID
         userChartRef.orderByChild("userId").equalTo(currentUser?.uid).addValueEventListener(object :
             ValueEventListener
         {
@@ -70,7 +70,6 @@ class ChordChartController() {
                     }
                 }
                 onResult(userChordCharts)
-
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -80,6 +79,7 @@ class ChordChartController() {
         )
     }
 
+    // Delete a selected chord chart by ID
     fun deleteChordChart(chartId: String, onDeleteResult: (Int) -> Unit) {
         val chartRef = FirebaseDatabase.getInstance().reference.child("chord_charts")
         val chartToDeleteRef = chartRef.child(chartId)
@@ -97,6 +97,7 @@ class ChordChartController() {
 
     }
 
+    // Query the database of chord charts by a set of parameters
     fun getChordChartsByCriteria(name: String, artist: String, genre: String, onResult: (List<ChordChart>) -> Unit) {
         var query: Query = chordChartRef
 
@@ -113,12 +114,14 @@ class ChordChartController() {
                         val matchesArtist = artist.isEmpty() || chart.artist.contains(artist, ignoreCase = true)
                         val matchesGenre = genre.isEmpty() || chart.genre.contains(genre, ignoreCase = true)
 
+                        // If the chart matches all criteria, add to the list of matching chord charts
                         if (matchesName && matchesArtist && matchesGenre) {
                             filteredChordCharts.add(chart)
                         }
                     }
                 }
 
+                // Return the result of the query
                 onResult(filteredChordCharts)
             }
 
@@ -128,7 +131,7 @@ class ChordChartController() {
         })
     }
 
-
+    // Tool to manage which chord chart is selected
     companion object {
         private var selectedChordChart = ChordChart()
         fun setSelectedChordChart(chart: ChordChart) {

@@ -1,6 +1,7 @@
 package com.example.shreddr.model
 
-data class User( // user class to store the user data
+// User class to store the user data
+data class User(
     val uid: String? = null,
     val email: String? = null,
     val password: String? = null

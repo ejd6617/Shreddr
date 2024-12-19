@@ -1,8 +1,7 @@
 package com.example.shreddr.model
 
-import com.google.firebase.database.FirebaseDatabase
-
 data class ChordChart(
+    // Contains attributes to store all chord chart attributes
     val author: String? = null,
     val name: String,
     val artist: String,
@@ -13,7 +12,10 @@ data class ChordChart(
     var genre: String
 )
 {
+    // Function to transpose a chord chart given a desired key
     fun transpose(newKey: String = "") {
+
+        // For each chord-lyric pair, call the transpose function given old key and new key
         for (chordLyricPair in chordsAndLyrics) {
             chordLyricPair.transpose(key, newKey)
         }
@@ -21,9 +23,6 @@ data class ChordChart(
     }
 
     constructor() : this(null, "", "", "", listOf(), null, "", "")
-
-
-
 }
 
 

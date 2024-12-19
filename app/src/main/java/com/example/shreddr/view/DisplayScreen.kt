@@ -1,5 +1,6 @@
 package com.example.shreddr.view
 
+// Import packages
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,10 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.foundation.Image
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
 import com.example.shreddr.controller.ChordChartController.Companion.getSelectedChordChart
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
@@ -39,6 +37,7 @@ import coil.compose.SubcomposeAsyncImage
 
 class DisplayScreen(private val navController: NavController) {
 
+    // Set up function to request chord images from chordgenerator.net
     fun getImageUrl(chord: String): String{
         when (chord) {
             "C" -> return "https://chordgenerator.net/C.png?p=x32010&f=-32-1-&s=2&b=false"
@@ -57,6 +56,7 @@ class DisplayScreen(private val navController: NavController) {
         return ""
     }
 
+    // Set up main function to display the screen
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
     @Composable
     fun displayScreen() {

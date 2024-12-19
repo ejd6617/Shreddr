@@ -1,8 +1,8 @@
 package com.example.shreddr.view
 
+// Import packages
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,10 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -43,19 +40,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.shreddr.controller.ChordChartController
-import com.example.shreddr.model.ChordChart
 import com.example.shreddr.model.ChordLyricPairs
 import com.google.firebase.auth.FirebaseAuth
 
-
-//This is not done yet
 class AddChordChartScreen(private val navController: NavController, private val chordChartController: ChordChartController) {
 
-
+    // Initialize variables to store user inputs
     private var currentUser = FirebaseAuth.getInstance().currentUser
     private var songName = mutableStateOf("")
     private var artistName = mutableStateOf("")
@@ -64,8 +57,7 @@ class AddChordChartScreen(private val navController: NavController, private val 
     private var selectedKey = mutableStateOf("C")
     private var genre = mutableStateOf("")
 
-
-
+    // Set up function to set up the add chord chart screen
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun addChordChartScreen()
@@ -263,11 +255,13 @@ class AddChordChartScreen(private val navController: NavController, private val 
         }
     }
 
+    // Function to add a new pair of chords and lyrics
     fun addPair()
     {
         chordsAndLyrics.add(ChordLyricPairs())
     }
 
+    // Function to remove the last pair of chords and lyrics
     fun removePair()
     {
         chordsAndLyrics.removeLast()
@@ -308,17 +302,19 @@ class AddChordChartScreen(private val navController: NavController, private val 
     }
 
     @Composable
-    fun uploadButton()
-    {
+    fun uploadButton() {
         val context = LocalContext.current
-        var uploadConfirmationTabVisible by remember {mutableStateOf(false)}
+        var uploadConfirmationTabVisible by remember { mutableStateOf(false) }
 
-        FloatingActionButton(onClick = { uploadConfirmationTabVisible = true }, containerColor = Color(0xFFC21717), contentColor = Color(0xFFFDDCA9)) {
+        FloatingActionButton(
+            onClick = { uploadConfirmationTabVisible = true },
+            containerColor = Color(0xFFC21717),
+            contentColor = Color(0xFFFDDCA9)
+        ) {
             Icon(Icons.Filled.Share, contentDescription = "Add")
         }
 
-        if(uploadConfirmationTabVisible)
-        {
+        if (uploadConfirmationTabVisible) {
             AlertDialog(
                 onDismissRequest = { uploadConfirmationTabVisible = false },
                 title = { Text("Confirmation") },
@@ -326,18 +322,45 @@ class AddChordChartScreen(private val navController: NavController, private val 
                 confirmButton = {
                     Button(
                         onClick = {
-                            chordChartController.saveChordChart(currentUser?.email.toString(), songName.value, artistName.value, selectedKey.value, chordsAndLyrics, currentUser?.uid.toString(), genre = genre.value ) { errorCode ->
-                                when(errorCode) {
-                                    0 -> {Toast.makeText( context,  "Chord Chart Successfully Uploaded!",  Toast.LENGTH_SHORT).show()
+                            chordChartController.saveChordChart(
+                                currentUser?.email.toString(),
+                                songName.value,
+                                artistName.value,
+                                selectedKey.value,
+                                chordsAndLyrics,
+                                currentUser?.uid.toString(),
+                                genre = genre.value
+                            ) { errorCode ->
+                                when (errorCode) {
+                                    0 -> {
+                                        Toast.makeText(
+                                            context,
+                                            "Chord Chart Successfully Uploaded!",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                         uploadConfirmationTabVisible = false
-                                        navController.navigate("searchScreen")}
+                                        navController.navigate("searchScreen")
+                                    }
 
 
-                                    -1 -> Toast.makeText( context,  "Error in saving chord chart, check console",  Toast.LENGTH_SHORT).show()
-                                    -2 -> Toast.makeText( context,  "Error: The song name cannot be empty!",  Toast.LENGTH_SHORT).show()
-                                    -3 -> Toast.makeText( context,  "The song author cannot be empty!",  Toast.LENGTH_SHORT).show()
+                                    -1 -> Toast.makeText(
+                                        context,
+                                        "Error in saving chord chart, check console",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    -2 -> Toast.makeText(
+                                        context,
+                                        "Error: The song name cannot be empty!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    -3 -> Toast.makeText(
+                                        context,
+                                        "The song author cannot be empty!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
-
 
 
                             }
@@ -353,10 +376,5 @@ class AddChordChartScreen(private val navController: NavController, private val 
                 }
             )
         }
-
-
     }
-
-
-
 }

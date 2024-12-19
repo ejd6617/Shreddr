@@ -1,14 +1,17 @@
 package com.example.shreddr.controller
 
+// Import packages
 import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.shreddr.model.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
+
 
 class UserController(private val chordChartController: ChordChartController)
 {
+
+    // Create database reference
     private val databaseInstance = FirebaseDatabase.getInstance()
     private val userRef = databaseInstance.getReference("users")
 
@@ -20,8 +23,8 @@ class UserController(private val chordChartController: ChordChartController)
         if (currentUser != null)
         {
             val userId = currentUser.uid
-            // Reference to the location of the user in Firebase Realtime Database
 
+            // Reference to the location of the user in Firebase Realtime Database
             chordChartController.getUserChordCharts { chordCharts ->
 
                 for (chart in chordCharts) {
@@ -80,23 +83,25 @@ class UserController(private val chordChartController: ChordChartController)
             }
     }
 
-    fun registerUser(email: String, password: String, onResult: (Int) -> Unit)
-    {
+    fun registerUser(email: String, password: String, onResult: (Int) -> Unit) {
         // the following function call returns a Task object. It then attaches a listener to that task to sense when it is done.
-        if(email.isEmpty() || password.isEmpty())return
+        if (email.isEmpty() || password.isEmpty()) return
 
         FirebaseAuth.getInstance()
             .createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val user = FirebaseAuth.getInstance().currentUser
-                    val uid = user?.uid ?: return@addOnCompleteListener // Handle null UID. I think this creates the uid?
+                    val uid = user?.uid
+                        ?: return@addOnCompleteListener // Handle null UID. I think this creates the uid?
 
                     val database = FirebaseDatabase.getInstance()
-                    val usersRef = database.getReference("users") //defines the path where this class will be stored
+                    val usersRef =
+                        database.getReference("users") //defines the path where this class will be stored
 
                     val newUser = User(uid, email, password)
-                    usersRef.child(uid).setValue(newUser) //long ah function creates a new user class and stores it in the database
+                    usersRef.child(uid)
+                        .setValue(newUser) //long ah function creates a new user class and stores it in the database
                         .addOnSuccessListener {
                             Log.d(TAG, "createUserWithUsername:success")
                             onResult(0) // Return success code
@@ -110,6 +115,4 @@ class UserController(private val chordChartController: ChordChartController)
                 }
             }
     }
-
-
 }
